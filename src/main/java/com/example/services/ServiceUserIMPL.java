@@ -3,6 +3,7 @@ package com.example.services;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,7 @@ import com.example.entities.Role;
 import com.example.entities.User;
 import com.example.repositories.UserRepository;
 
-@Service(value = "userService")
+@Service("userService")
 public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 
 	
@@ -27,13 +28,29 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 	@Autowired
 	private UserRepository userRepository;
 	
+	
+	@Override
+	public void updateUser(User user, Optional<User> users) {
+		// TODO Auto-generated method stub
+		user.setUser(users.get());
+		userRepository.saveAndFlush(user);
+		
+	}
+
 	@Override
 	public void register(User u) {
 	    u.setPassword(bcryptEncoder.encode(u.getPassword()));
 		userRepository.save(u);
 		
 	}
-
+	@Override
+	public Optional<User> findUser(int id) {
+	
+		return userRepository.findById(id);
+	}
+	
+	
+	
 	@Override
 	public List<User> getAll() {
 		List<User> list = new ArrayList<>();

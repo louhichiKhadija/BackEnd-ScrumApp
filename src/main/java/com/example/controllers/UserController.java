@@ -1,12 +1,16 @@
 package com.example.controllers;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import com.example.entities.User;
 import com.example.services.IServiceUser;
@@ -36,6 +40,12 @@ public class UserController {
     @GetMapping(value = "/users/{id}")
     public User getOne(@PathVariable(value = "id") int id){
         return userService.findById(id);
+    }
+    
+    @PostMapping("/update/{user_id}")	
+    public @ResponseBody void update(@PathVariable int user_id,@RequestBody  User user) {
+    	Optional<User> result=(Optional<User>) userService.findUser(user_id);
+    userService.updateUser(user, result);
     }
 
 }

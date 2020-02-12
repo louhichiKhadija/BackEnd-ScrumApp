@@ -131,6 +131,14 @@ public class User {
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
 	}
+
+
+
+
+	public void setUser(User user) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 	
 	
