@@ -24,14 +24,14 @@ public class UserController {
     private IServiceUser userService;
 
     //@Secured({"ROLE_ADMIN", "ROLE_USER"})
-    @PreAuthorize("hasRole('USER')")
+  //  @PreAuthorize("hasRole('USER')")
     @GetMapping(value="/users")
     public List<User> listUser(){
         return userService.getAll();
     }
 
     //@Secured("ROLE_USER")
-    @PreAuthorize("hasRole('ADMIN')")
+   // @PreAuthorize("hasRole('ADMIN')")
     ////@PreAuthorize("hasAnyRole('USER', 'ADMIN')")
     @GetMapping(value = "/users/{id}")
     public User getOne(@PathVariable(value = "id") int id){

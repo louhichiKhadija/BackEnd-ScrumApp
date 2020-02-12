@@ -90,10 +90,8 @@ public class TokenProvider implements Serializable {
         final Jws<Claims> claimsJws = jwtParser.parseClaimsJws(token);
 
         final Claims claims = claimsJws.getBody();
-        final Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get("role").toString().split(","))
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList());
+        final Collection<? extends GrantedAuthority> authorities =null;
+                
         
         return new UsernamePasswordAuthenticationToken(userDetails, "", authorities);
     }
