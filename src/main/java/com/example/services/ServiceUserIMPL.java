@@ -13,10 +13,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.entities.Role;
 import com.example.entities.User;
 import com.example.repositories.UserRepository;
+import com.example.utils.FileStorageService;
 
 @Service(value = "userService")
 public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
@@ -27,9 +29,14 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 	@Autowired
 	private UserRepository userRepository;
 	
+	@Autowired
+	private FileStorageService fileStorageService;
+	
 	@Override
 	public void register(User u) {
 	    u.setPassword(bcryptEncoder.encode(u.getPassword()));
+	
+	    
 		userRepository.save(u);
 		
 	}
@@ -73,5 +80,16 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 		User user = userRepository.findByEmail(email);
 		return user;
 	}
+
+	@Override
+	public String uploadImage(MultipartFile file) {
+		return fileStorageService.storeFile(file);
+	}
+	
+	@Override
+    public String getFileName(int id) {
+           User user =  userRepository.findById(id).get();
+           return user.getPhoto();
+    }
 
 }
