@@ -13,13 +13,16 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.entities.Role;
 import com.example.entities.User;
 import com.example.repositories.UserRepository;
 import com.example.utils.FileStorageService;
 
+@Transactional
 @Service(value = "userService")
 public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 
@@ -35,9 +38,8 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 	@Override
 	public void register(User u) {
 	    u.setPassword(bcryptEncoder.encode(u.getPassword()));
-	
-	    
-		userRepository.save(u);
+		userRepository.saveAndFlush(u);
+
 		
 	}
 

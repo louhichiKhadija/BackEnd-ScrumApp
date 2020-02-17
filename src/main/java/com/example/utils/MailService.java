@@ -27,14 +27,16 @@ public class MailService {
 	}
 
 
-	/*public void sendEmail(User user) throws MailException {
+	public void sendResetEmail(User user,ConfirmationToken confirmationToken) throws MailException {
 
 		SimpleMailMessage mail = new SimpleMailMessage();
 		mail.setTo(user.getEmail());
-		mail.setSubject("Testing Mail API");
-		mail.setText("Hurray ! You have done that dude...");
+		mail.setSubject("Reset password");
+		mail.setText("To reset your password, please click here:"
+				+ "http://localhost:4200/auth/reset-password?token="+confirmationToken.getConfirmationToken());
 		javaMailSender.send(mail);
-	}*/
+		
+	}
 	
 	public void sendConfirmationEmail(User user, ConfirmationToken confirmationToken) throws MailException {
 		
@@ -42,7 +44,7 @@ public class MailService {
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setText("To confirm your account, please click here : "
-        +"http://localhost:9000/confirm-account?token="+confirmationToken.getConfirmationToken());
+        +"http://localhost:9000/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
         javaMailSender.send(mailMessage);		
 	}
 
