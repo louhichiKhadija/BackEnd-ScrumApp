@@ -1,6 +1,9 @@
 package com.example.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 public class User {
@@ -9,11 +12,24 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private int id;
 	
+	@NotEmpty(message="FirstName is required")
 	private String firstName;
+	
+	@NotEmpty(message="LastName is required")
 	private String lastName;
+	
+	@NotEmpty(message="Email is required")
+	@Email(message="Please enter a valid email")
+	@Column(name="email",unique=true)
 	private String email;
+	
+	@NotEmpty(message="Password is required")
+	@Size(min=8, message="Password shoud not be less than  8 caracters")
 	private String password;
+	
+	
 	private String photo;
+	
 	
 	private boolean isEnabled;
 	

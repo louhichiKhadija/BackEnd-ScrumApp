@@ -1,5 +1,7 @@
 package com.example.controllers;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.example.configSecurity.TokenProvider;
 import com.example.entities.ConfirmationToken;
@@ -65,7 +68,7 @@ public class AuthController {
 	    }
 	    
 	    @PostMapping(value="/register")
-	    public ResponseEntity<?> saveUser(@RequestBody User user){
+	    public ResponseEntity<?> saveUser(@Valid @RequestBody User user){
 	    	user.setEnabled(false);
 	    	userService.register(user);
 	    	
@@ -88,6 +91,8 @@ public class AuthController {
 	        {
 	            User user = userService.findByEmail(token.getUser().getEmail());
 	            user.setEnabled(true);
+	            
+	             
 	            userService.register(user);
 	            return "Account is now enabled";
 	        }
@@ -96,6 +101,12 @@ public class AuthController {
 	            return "The link is invalid or broken!";
 	        }
 	     }
+	    
+	    
+	    @PostMapping(value="/upload-image", consumes =  {"multipart/form-data"})
+	    public String uploadImage(@RequestParam("file")  MultipartFile file) {
+	    	return userService.uploadImage(file);
+	    }
 
 
 }
