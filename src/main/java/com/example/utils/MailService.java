@@ -47,6 +47,16 @@ public class MailService {
         +"http://localhost:9000/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
         javaMailSender.send(mailMessage);		
 	}
+	
+	public void sendInvitationEmail(User user, ConfirmationToken confirmationToken) throws MailException {
+		SimpleMailMessage mailMessage = new SimpleMailMessage();
+        mailMessage.setTo(user.getEmail());
+        mailMessage.setSubject("Invitation membres!");
+        mailMessage.setText("To accepte invitaion, please click here : "
+        +"http://localhost:9000/project/confirm-invitation?token="+confirmationToken.getConfirmationToken());
+        javaMailSender.send(mailMessage);		
+		
+	}
 
 
 
