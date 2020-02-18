@@ -9,6 +9,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,16 +28,19 @@ public class ConfirmationToken {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
-	@OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+	@ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "user_id")
 	private User user;
 	
+	private String type;
+	
 	public ConfirmationToken() {}
 
-	public ConfirmationToken(User user) {
+	public ConfirmationToken(User user, String type) {
 		this.user = user;
 		createdDate = new Date();
 		confirmationToken = UUID.randomUUID().toString();
+		this.type=type;
 		}
 
 	public Long getId() {
@@ -70,7 +74,14 @@ public class ConfirmationToken {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
 	
 	
 
