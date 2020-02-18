@@ -38,7 +38,12 @@ public class UserController {
 	
 	@Autowired
 	private FileStorageService fs;
+
  
+
+
+
+
 
     @GetMapping(value="/getall")
 

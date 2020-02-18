@@ -1,8 +1,5 @@
 package com.example.controllers;
 
-
-import java.util.Optional;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,22 +13,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.configSecurity.TokenProvider;
 import com.example.entities.ConfirmationToken;
-import com.example.entities.Project;
 import com.example.entities.User;
 import com.example.repositories.ConfirmationTokenRepository;
 import com.example.services.IServiceUser;
-import com.example.services.ServiceProject;
 import com.example.utils.AuthToken;
 import com.example.utils.MailService;
 
@@ -58,8 +51,7 @@ public class AuthController {
 	 @Autowired
 	 private MailService mailService;
 	    
-	 @Autowired 
-	 private ServiceProject projectService;
+	   
 
 	    @PostMapping(value = "/login")
 	    public ResponseEntity<?> register(@RequestBody User loginUser) throws AuthenticationException {
@@ -87,7 +79,7 @@ public class AuthController {
 	    				+ "Please check your mail to confirm your account", HttpStatus.EXPECTATION_FAILED);
 	    	}
 	    	
-	    	ConfirmationToken confirmationToken=new ConfirmationToken(user);
+	    	ConfirmationToken confirmationToken=new ConfirmationToken(user, "confirmation-account");
 	    	confirmationTokenRepository.save(confirmationToken);
 	    	mailService.sendConfirmationEmail(user, confirmationToken);
 	    	
@@ -102,21 +94,21 @@ public class AuthController {
 	    {
 			ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
-	        if(token != null)
+	        if(token != null && token.getType()=="confirmation-account")
 	        {
 	            User user = userService.findByEmail(token.getUser().getEmail());
-	            user.setEnabled(true);
+	            if (user.isEnabled()) return  new ResponseEntity<>("This account is already enabled",HttpStatus.OK);
 	            
-	             
-	            userService.register(user);
-	            return  new ResponseEntity<>("Account is now enabled",HttpStatus.OK);
+	            else{
+	            	user.setEnabled(true);
+	            	userService.register(user);
+	            	return  new ResponseEntity<>("Account is now enabled",HttpStatus.OK);}
 	        }
 	        else
 	        {
 	        	return  new ResponseEntity<>("The link is invalid or broken!",HttpStatus.EXPECTATION_FAILED);
 	        }
 	     }
-
 
 	    
 	    @PostMapping(value="/upload-image", consumes =  {"multipart/form-data"})
@@ -129,7 +121,7 @@ public class AuthController {
 	    public ResponseEntity<?> resetMail(@RequestBody String email){
 	    	User user= userService.findByEmail(email);
 	    	if(user!= null) {
-	    		ConfirmationToken confirmationToken = new ConfirmationToken(user);
+	    		ConfirmationToken confirmationToken = new ConfirmationToken(user, "reset-password");
 		        confirmationTokenRepository.save(confirmationToken);
 		        mailService.sendResetEmail(user,confirmationToken);
 		        return new ResponseEntity<>("An email has been sent to your address mail"
@@ -138,14 +130,23 @@ public class AuthController {
 	    	else return new ResponseEntity<>("This mail doesn't exist!!",HttpStatus.EXPECTATION_FAILED);
 	    }
 	    
-	 
+	    //after click on mail link
+	    @GetMapping(value="/reset-password")
+    	public boolean newPassword(@RequestParam("token") String confirmationToken)
+    	{
+	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+	        if(token != null && token.getType()=="reset-password"){
+	        	return true;
+	        }
+	        else return false;   
+    	}
 	    
 	    //reset password button (save new password)
 	    @PostMapping(value="/reset-password")
     	public ResponseEntity<?> newPassword(@RequestParam("token") String confirmationToken,
     			                             @RequestBody String password){
 	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-	        if(token != null){
+	        if(token != null && token.getType()== "rest-password"){
 	        	User user =token.getUser();
 	        	user.setPassword(password);
 	        	userService.register(user);
@@ -155,9 +156,6 @@ public class AuthController {
     	}
 	    
 
-	    
-	    
-	    
 
-	 
+
 }
