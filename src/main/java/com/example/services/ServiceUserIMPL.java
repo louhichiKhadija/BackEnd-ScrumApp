@@ -30,21 +30,21 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 	@Autowired
 	private UserRepository userRepository;
 	
-<<<<<<< HEAD
+
 	
 	@Override
-	public void updateUser(User user, Optional<User> users) {
+	public void updateUser(Optional<User> users,User user) {
 		// TODO Auto-generated method stub
 		user.setUser(users.get());
 		userRepository.saveAndFlush(user);
 		
 	}
 
-=======
+
 	@Autowired
 	private FileStorageService fileStorageService;
 	
->>>>>>> 0a58ee82eb216bb7986c3270c7c53e69f619784c
+
 	@Override
 	public void register(User u) {
 	    u.setPassword(bcryptEncoder.encode(u.getPassword()));
@@ -111,5 +111,10 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
            User user =  userRepository.findById(id).get();
            return user.getPhoto();
     }
+	@Override
+	public void updateUser(User user, Optional<User> users) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
