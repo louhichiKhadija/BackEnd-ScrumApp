@@ -79,7 +79,7 @@ public class AuthController {
 	    				+ "Please check your mail to confirm your account", HttpStatus.EXPECTATION_FAILED);
 	    	}
 	    	
-	    	ConfirmationToken confirmationToken=new ConfirmationToken(user);
+	    	ConfirmationToken confirmationToken=new ConfirmationToken(user, "confirmation-account");
 	    	confirmationTokenRepository.save(confirmationToken);
 	    	mailService.sendConfirmationEmail(user, confirmationToken);
 	    	
@@ -94,14 +94,15 @@ public class AuthController {
 	    {
 			ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
-	        if(token != null)
+	        if(token != null && token.getType()=="confirmation-account")
 	        {
 	            User user = userService.findByEmail(token.getUser().getEmail());
-	            user.setEnabled(true);
+	            if (user.isEnabled()) return  new ResponseEntity<>("This account is already enabled",HttpStatus.OK);
 	            
-	             
-	            userService.register(user);
-	            return  new ResponseEntity<>("Account is now enabled",HttpStatus.OK);
+	            else{
+	            	user.setEnabled(true);
+	            	userService.register(user);
+	            	return  new ResponseEntity<>("Account is now enabled",HttpStatus.OK);}
 	        }
 	        else
 	        {
@@ -120,7 +121,7 @@ public class AuthController {
 	    public ResponseEntity<?> resetMail(@RequestBody String email){
 	    	User user= userService.findByEmail(email);
 	    	if(user!= null) {
-	    		ConfirmationToken confirmationToken = new ConfirmationToken(user);
+	    		ConfirmationToken confirmationToken = new ConfirmationToken(user, "reset-password");
 		        confirmationTokenRepository.save(confirmationToken);
 		        mailService.sendResetEmail(user,confirmationToken);
 		        return new ResponseEntity<>("An email has been sent to your address mail"
@@ -129,14 +130,23 @@ public class AuthController {
 	    	else return new ResponseEntity<>("This mail doesn't exist!!",HttpStatus.EXPECTATION_FAILED);
 	    }
 	    
-	 
+	    //after click on mail link
+	    @GetMapping(value="/reset-password")
+    	public boolean newPassword(@RequestParam("token") String confirmationToken)
+    	{
+	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+	        if(token != null && token.getType()=="reset-password"){
+	        	return true;
+	        }
+	        else return false;   
+    	}
 	    
 	    //reset password button (save new password)
 	    @PostMapping(value="/reset-password")
     	public ResponseEntity<?> newPassword(@RequestParam("token") String confirmationToken,
     			                             @RequestBody String password){
 	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-	        if(token != null){
+	        if(token != null && token.getType()=="reset-password"){
 	        	User user =token.getUser();
 	        	user.setPassword(password);
 	        	userService.register(user);
