@@ -33,7 +33,7 @@ public class MailService {
 		mail.setTo(user.getEmail());
 		mail.setSubject("Reset password");
 		mail.setText("To reset your password, please click here:"
-				+ "http://localhost:4200/auth/reset-password?token="+confirmationToken.getConfirmationToken());
+				+ "http://localhost:9000/auth/reset-password?token="+confirmationToken.getConfirmationToken());
 		javaMailSender.send(mail);
 		
 	}

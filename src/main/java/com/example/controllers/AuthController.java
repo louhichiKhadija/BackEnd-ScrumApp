@@ -146,6 +146,7 @@ public class AuthController {
     	public ResponseEntity<?> newPassword(@RequestParam("token") String confirmationToken,
     			                             @RequestBody String password){
 	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
+
 	        if(token != null && token.getType()== "rest-password"){
 	        	User user =token.getUser();
 	        	user.setPassword(password);
