@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
@@ -28,11 +27,13 @@ public class ConfirmationToken {
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date createdDate;
 	
+	private String type;
+	
+	
 	@ManyToOne(targetEntity = User.class, fetch = FetchType.EAGER)
 	@JoinColumn(nullable = false, name = "user_id")
 	private User user;
 	
-	private String type;
 	
 	public ConfirmationToken() {}
 
