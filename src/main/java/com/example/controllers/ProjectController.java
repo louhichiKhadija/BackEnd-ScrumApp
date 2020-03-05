@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.entities.Project;
+import com.example.entities.*;
 
 import com.example.services.ServiceProject;
 
@@ -24,9 +24,9 @@ public Optional<Project>  getProject(@PathVariable(value = "id") long id)
 	return projectService.findProject(id);
 	
 }
-@GetMapping(value="/add-project")
-public void addProject(@RequestBody Project project) {
-	projectService.addProject(project);
+@PostMapping(value="/add-project")
+public void addProject(@RequestBody Project project, User user) {
+	projectService.addProject(project, user);
 }
 
 
