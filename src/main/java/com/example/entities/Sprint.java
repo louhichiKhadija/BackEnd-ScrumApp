@@ -21,8 +21,10 @@ public class Sprint {
 	
 	private String description;
 	
+	private boolean current;
+	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy ="sprint")
-	private List<Task> tasks=new ArrayList<Task>();
+	private List<Taches> tasks=new ArrayList<Taches>();
 
 	public int getId() {
 		return id;
@@ -49,13 +51,23 @@ public class Sprint {
 	}
 
 	@JsonIgnore
-	public List<Task> getTasks() {
+	public List<Taches> getTasks() {
 		return tasks;
 	}
 
-	public void setTasks(List<Task> tasks) {
+	public void setTasks(List<Taches> tasks) {
 		this.tasks = tasks;
 	}
+
+	public boolean isCurrent() {
+		return current;
+	}
+
+	public void setCurrent(boolean current) {
+		this.current = current;
+	}
+	
+	
 	
 	
 }

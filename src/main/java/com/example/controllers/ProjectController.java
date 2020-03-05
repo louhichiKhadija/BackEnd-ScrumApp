@@ -24,7 +24,7 @@ public Optional<Project>  getProject(@PathVariable(value = "id") long id)
 	return projectService.findProject(id);
 	
 }
-@GetMapping(value="/add-project")
+@PostMapping(value="/add-project")
 public void addProject(@RequestBody Project project) {
 	projectService.addProject(project);
 }

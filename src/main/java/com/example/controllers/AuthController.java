@@ -1,11 +1,10 @@
 package com.example.controllers;
-
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
+
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,15 +12,18 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.example.configSecurity.TokenProvider;
 import com.example.entities.ConfirmationToken;
+
 import com.example.entities.User;
 import com.example.repositories.ConfirmationTokenRepository;
 import com.example.services.IServiceUser;
@@ -94,7 +96,7 @@ public class AuthController {
 	    {
 			ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
-	        if(token != null && token.getType()=="confirmation-account")
+	        if(token != null && token.getType().equals("confirmation-account"))
 	        {
 	            User user = userService.findByEmail(token.getUser().getEmail());
 	            if (user.isEnabled()) return  new ResponseEntity<>("This account is already enabled",HttpStatus.OK);
@@ -135,7 +137,7 @@ public class AuthController {
     	public boolean newPassword(@RequestParam("token") String confirmationToken)
     	{
 	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
-	        if(token != null && token.getType()=="reset-password"){
+	        if(token != null && token.getType().equals("reset-password")){
 	        	return true;
 	        }
 	        else return false;   
@@ -147,7 +149,7 @@ public class AuthController {
     			                             @RequestBody String password){
 	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
-	        if(token != null && token.getType()== "rest-password"){
+	        if(token != null && token.getType().equals("rest-password")){
 	        	User user =token.getUser();
 	        	user.setPassword(password);
 	        	userService.register(user);
