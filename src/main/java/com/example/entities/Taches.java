@@ -27,8 +27,16 @@ public class Taches {
 	}
 
 	public Taches() {}
+	
+	
 
 	
+	public Taches(String title, String state) {
+		super();
+		this.title = title;
+		this.state = state;
+	}
+
 	public int getId() {
 		return id;
 	}
@@ -89,6 +97,16 @@ public class Taches {
 	public void setSprint(Sprint sprint) {
 		this.sprint = sprint;
 	}
+
+	public Userstory getUserstory() {
+		return userstory;
+	}
+
+	public void setUserstory(Userstory userstory) {
+		this.userstory = userstory;
+	}
+	
+	
 	
 	
 }

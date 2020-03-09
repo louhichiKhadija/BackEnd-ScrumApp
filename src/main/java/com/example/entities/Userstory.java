@@ -1,11 +1,15 @@
 package com.example.entities;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
 
+
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Userstory {
 
@@ -18,6 +22,7 @@ public class Userstory {
 	private String description;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
+
 	private Project project;
 	
 	 @OneToMany(fetch = FetchType.EAGER, mappedBy ="userstory")
@@ -27,6 +32,10 @@ public class Userstory {
 	
 	public Userstory() {
 		
+	}
+	
+	public Userstory(String name) {
+		this.name = name;
 	}
 
 
@@ -72,6 +81,30 @@ public class Userstory {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+
+
+	public Project getProject() {
+		return project;
+	}
+
+
+
+	public void setProject(Project project) {
+		this.project = project;
+	}
+
+
+
+	public List<Taches> getTaches() {
+		return taches;
+	}
+
+
+
+	public void setTaches(List<Taches> taches) {
+		this.taches = taches;
 	}
 	
 	

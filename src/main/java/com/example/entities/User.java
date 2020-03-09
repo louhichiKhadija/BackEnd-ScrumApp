@@ -1,6 +1,8 @@
 package com.example.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
@@ -39,7 +41,7 @@ public class User {
 	private boolean isEnabled;
 	
 	   @ManyToMany(fetch = FetchType.EAGER, mappedBy = "user")
-	    private Set<Project> project = new HashSet<>();
+	    private List<Project> projects = new ArrayList<>();
 	
 	
 	
@@ -125,15 +127,9 @@ public class User {
 
 
 
-
-
-
 	public String getEmail() {
 		return email;
 	}
-
-
-
 
 
 
@@ -154,13 +150,23 @@ public class User {
 	public void setEnabled(boolean isEnabled) {
 		this.isEnabled = isEnabled;
 	}
-
-
-
+	
 
 	public void setUser(User user) {
 		// TODO Auto-generated method stub
 		
+	}
+
+
+public void setProjects(List<Project> projects) {
+		this.projects = projects;
+	}
+
+
+
+	public List<Project> getProjects() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	
