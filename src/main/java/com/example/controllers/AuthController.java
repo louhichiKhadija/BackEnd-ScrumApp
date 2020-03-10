@@ -1,11 +1,8 @@
 package com.example.controllers;
-
 import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.MailException;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -27,8 +24,6 @@ import com.example.repositories.ConfirmationTokenRepository;
 import com.example.services.IServiceUser;
 import com.example.utils.AuthToken;
 import com.example.utils.MailService;
-
-
 
 
 @CrossOrigin(origins = "*")
