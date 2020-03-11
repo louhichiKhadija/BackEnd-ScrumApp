@@ -31,4 +31,8 @@ public class ServiceTachesImpl implements ServiceTaches {
 	public void updateTaches(Taches taches) {
 		tacheReprository.saveAndFlush(taches);
 	}
+	@Override
+	public void deleteTache(long id) {
+		tacheReprository.deleteById(id);
+	}
 }
