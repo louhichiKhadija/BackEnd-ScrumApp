@@ -23,9 +23,11 @@ public class ServiceSprintImpl implements IServiceSprint{
 	
 	
 	@Override
-	public void addSprint(Sprint sprint) {
-		sprintRepository.save(sprint);
+	public int addSprint(Sprint sprint) {
+		sprint=sprintRepository.save(sprint);
+		return sprint.getId();
 	}
+
 	
 	@Override
 	public Optional<Sprint> getSprintById(int id) {
@@ -39,6 +41,7 @@ public class ServiceSprintImpl implements IServiceSprint{
 			oldSprint.setTasks(sprint.getTasks());
 			oldSprint.setCurrent(sprint.isCurrent());
 			oldSprint.setDescription(sprint.getDescription());
+			sprintRepository.save(oldSprint);
 		}
 		
 	}
@@ -55,11 +58,17 @@ public class ServiceSprintImpl implements IServiceSprint{
 	}
 	
 	@Override
-	public void addTaskToSprint(Sprint sprint, Taches task){
+	public void addTaskToSprint(int id, int idTask){
+		Sprint sprint=sprintRepository.findById(id).get();
+		Taches task= tacheRepository.findById(idTask).get();
 		List<Taches> tasks= sprint.getTasks();
-		tasks.add(task);
-		sprint.setTasks(tasks);
-		sprintRepository.save(sprint);
+		if(!(tasks.contains(task))) {
+			tasks.add(task);
+			task.setSprint(sprint);
+			tacheRepository.save(task);
+			
+			sprint.setTasks(tasks);
+			sprintRepository.save(sprint);}
 	}
 	
 	@Override
@@ -72,5 +81,9 @@ public class ServiceSprintImpl implements IServiceSprint{
 		}
 	}
 	
+	@Override
+	public List<Sprint> getSprintsByProjetId(int projectId){
+		return sprintRepository.findByProjectId(projectId);
+	}
 
 }

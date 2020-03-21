@@ -2,7 +2,6 @@ package com.example.services;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.*;
@@ -30,5 +29,15 @@ public class ServiceTachesImpl implements ServiceTaches {
 	@Override
 	public void updateTaches(Taches taches) {
 		tacheReprository.saveAndFlush(taches);
+	}
+	
+	@Override
+	public List<Taches> getNonTakenTasks(){
+		return tacheReprository.nonTakenTasks();
+	}
+	
+	@Override
+	public List<Taches> getTasksBySprint(int idSprint){
+		return tacheReprository.findBySprintId(idSprint);
 	}
 }

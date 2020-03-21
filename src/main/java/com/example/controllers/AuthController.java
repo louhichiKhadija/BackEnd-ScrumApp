@@ -92,23 +92,24 @@ public class AuthController {
 	    
 	    
 	    @GetMapping(value = "/confirm-account")
-	    public ResponseEntity<?> confirmUserAccount(@RequestParam("token")String confirmationToken)
+	    public boolean confirmUserAccount(@RequestParam("token")String confirmationToken)
 	    {
 			ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
 	        if(token != null && token.getType().equals("confirmation-account"))
 	        {
 	            User user = userService.findByEmail(token.getUser().getEmail());
-	            if (user.isEnabled()) return  new ResponseEntity<>("This account is already enabled",HttpStatus.OK);
+	            if (user.isEnabled()) return true;
 	            
 	            else{
 	            	user.setEnabled(true);
-	            	userService.register(user);
-	            	return  new ResponseEntity<>("Account is now enabled",HttpStatus.OK);}
+					userService.register(user);
+					confirmationTokenRepository.delete(token);
+	            	return true;}
 	        }
 	        else
 	        {
-	        	return  new ResponseEntity<>("The link is invalid or broken!",HttpStatus.EXPECTATION_FAILED);
+	        	return false;
 	        }
 	     }
 	    
@@ -126,8 +127,9 @@ public class AuthController {
 	    		ConfirmationToken confirmationToken = new ConfirmationToken(user, "reset-password");
 		        confirmationTokenRepository.save(confirmationToken);
 		        mailService.sendResetEmail(user,confirmationToken);
-		        return new ResponseEntity<>("An email has been sent to your address mail"
-		        		+ "Please check your email to reset your password",HttpStatus.OK);
+		        
+		        return new ResponseEntity<String>("An email has been sent to your address mail"
+		        	+ "Please check your email to reset your password",HttpStatus.OK);
 	    	}
 	    	else return new ResponseEntity<>("This mail doesn't exist!!",HttpStatus.EXPECTATION_FAILED);
 	    }
@@ -149,7 +151,7 @@ public class AuthController {
     			                             @RequestBody String password){
 	    	ConfirmationToken token = confirmationTokenRepository.findByConfirmationToken(confirmationToken);
 
-	        if(token != null && token.getType().equals("rest-password")){
+	        if(token != null && token.getType().equals("reset-password")){
 	        	User user =token.getUser();
 	        	user.setPassword(password);
 	        	userService.register(user);

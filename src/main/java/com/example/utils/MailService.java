@@ -1,15 +1,12 @@
 package com.example.utils;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
+
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import com.example.entities.ConfirmationToken;
@@ -33,7 +30,7 @@ public class MailService {
 		mail.setTo(user.getEmail());
 		mail.setSubject("Reset password");
 		mail.setText("To reset your password, please click here:"
-				+ "http://localhost:9000/auth/reset-password?token="+confirmationToken.getConfirmationToken());
+				+ "http://localhost:4200/auth/reset-password?token="+confirmationToken.getConfirmationToken());
 		javaMailSender.send(mail);
 		
 	}
@@ -44,7 +41,7 @@ public class MailService {
         mailMessage.setTo(user.getEmail());
         mailMessage.setSubject("Complete Registration!");
         mailMessage.setText("To confirm your account, please click here : "
-        +"http://localhost:9000/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
+        +"http://localhost:4200/auth/confirm-account?token="+confirmationToken.getConfirmationToken());
         javaMailSender.send(mailMessage);		
 	}
 

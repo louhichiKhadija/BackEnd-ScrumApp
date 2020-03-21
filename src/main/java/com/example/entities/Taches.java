@@ -2,6 +2,8 @@ package com.example.entities;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Taches {
@@ -78,6 +80,7 @@ public class Taches {
 		this.state = state;
 	}
 
+	@JsonIgnore
 	public Sprint getSprint() {
 		return sprint;
 	}

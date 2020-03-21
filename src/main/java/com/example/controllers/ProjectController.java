@@ -1,5 +1,6 @@
 package com.example.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.entities.Project;
 
 import com.example.services.ServiceProject;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
+@CrossOrigin(origins = "*")
 @RestController
 public class ProjectController {
 @Autowired 
@@ -27,6 +30,12 @@ public Optional<Project>  getProject(@PathVariable(value = "id") long id)
 @PostMapping(value="/add-project")
 public void addProject(@RequestBody Project project) {
 	projectService.addProject(project);
+}
+
+@GetMapping(value="/getAllProjects")
+public List<Project>  getProjects()
+{
+	return projectService.getProjectsByUser();
 }
 
 

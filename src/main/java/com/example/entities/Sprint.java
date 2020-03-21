@@ -8,6 +8,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,6 +26,9 @@ public class Sprint {
 	
 	@OneToMany(fetch = FetchType.EAGER, mappedBy ="sprint")
 	private List<Taches> tasks=new ArrayList<Taches>();
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	private Project project;
 
 	public int getId() {
 		return id;
@@ -65,6 +69,14 @@ public class Sprint {
 
 	public void setCurrent(boolean current) {
 		this.current = current;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	public void setProject(Project project) {
+		this.project = project;
 	}
 	
 	

@@ -7,6 +7,8 @@ import com.example.entities.Taches;
 public interface ServiceTaches {
 public List<Taches> getAll();
 public void addTaches(Taches T);
-public void updateTaches( Taches taches);	
+public void updateTaches( Taches taches);
+public List<Taches> getNonTakenTasks();
+public List<Taches> getTasksBySprint(int idSprint);
 	
 }
