@@ -13,7 +13,7 @@ public interface IServiceSprint {
 	public void deleteSprint(int id);
 	public void addTaskToSprint(int id, int idTask);
 	public void startSprint(int id);
-	public List<Sprint> getSprintsByProjetId(int projectId);
-	
+	public List<Sprint> getSprintsByProjetId(Long projectId);
+	public Sprint getCurrentSprint(Long id);
 	
 }

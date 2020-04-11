@@ -45,7 +45,7 @@ public class SprintController {
 	}
 
 	@GetMapping(value="/getSprintsByProject/{id}")
-	public ResponseEntity<?> getSprintByProject(@PathVariable(value = "id") int id){
+	public ResponseEntity<?> getSprintByProject(@PathVariable(value = "id") Long id){
 		List<Sprint> sprints=sprintService.getSprintsByProjetId(id);
 		return new ResponseEntity<>(sprints,HttpStatus.OK);
 	}
@@ -75,12 +75,23 @@ public class SprintController {
 	@GetMapping(value="/deleteSprint/{id}")
 	public ResponseEntity<?> deleteSprint(@PathVariable int id){
 		sprintService.deleteSprint(id);
-		return new ResponseEntity<>("Sprint is deleted successfully",HttpStatus.OK);
+		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/addTaskToSprint/{id}/{idTask}")
 	public ResponseEntity<?> addTaskToSprint(@PathVariable int id, @PathVariable int idTask){
 		sprintService.addTaskToSprint(id, idTask);
-		return new ResponseEntity<>("Task is added to sprint", HttpStatus.OK);
+		return new ResponseEntity<>(true, HttpStatus.OK);
+	}
+
+	@GetMapping(value="/getCurrentSprint/{id}")
+	public ResponseEntity<?> addTaskToSprint(@PathVariable Long id){
+		Sprint sprint=sprintService.getCurrentSprint(id);
+		if(sprint==null){
+			Sprint firstSprint=sprintService.getSprintsByProjetId(id).get(0);
+			sprintService.startSprint(firstSprint.getId());
+			return new ResponseEntity<>(firstSprint.getTasks(),HttpStatus.OK);}
+		
+		return new ResponseEntity<>(sprintService.getCurrentSprint(id).getTasks(),HttpStatus.OK);	
 	}
 }

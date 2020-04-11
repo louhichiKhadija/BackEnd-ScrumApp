@@ -10,7 +10,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Sprint {
@@ -54,7 +53,7 @@ public class Sprint {
 		this.description = description;
 	}
 
-	@JsonIgnore
+
 	public List<Taches> getTasks() {
 		return tasks;
 	}

@@ -9,6 +9,9 @@ import com.example.entities.Sprint;
 
 @Repository
 public interface SprintRepository extends JpaRepository<Sprint, Integer>{
-    List<Sprint> findByProjectId(int projectId);
+    List<Sprint> findByProjectId(Long projectId);
+
+    //@Query("select s from Sprint s where s.project_id= id AND s.current IS TRUE")
+    Sprint findByProjectIdAndCurrent(Long id,boolean T);
 
 }

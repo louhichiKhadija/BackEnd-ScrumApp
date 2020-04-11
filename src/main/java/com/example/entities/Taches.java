@@ -16,6 +16,9 @@ public class Taches {
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	private Sprint sprint;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	private User owner;
 	
 	public Taches(int id, String title, String content, String state) {	
 		this.id = id;
@@ -87,6 +90,14 @@ public class Taches {
 
 	public void setSprint(Sprint sprint) {
 		this.sprint = sprint;
+	}
+
+	public User getOwner() {
+		return owner;
+	}
+
+	public void setOwner(User owner) {
+		this.owner = owner;
 	}
 	
 	

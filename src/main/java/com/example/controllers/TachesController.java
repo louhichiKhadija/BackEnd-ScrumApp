@@ -27,9 +27,9 @@ public class TachesController {
 	}
 	
 
-@PostMapping(value="/add-taches")
-public void adTaches(@RequestBody  Taches taches) {
-	serviceTaches.addTaches(taches);
+@PostMapping(value="/add-taches/{idSprint}")
+public void adTaches(@RequestBody  Taches taches,@PathVariable int idSprint) {
+	serviceTaches.addTaches(taches, idSprint);
 }
 @PostMapping(value="/update")
 public void update(@RequestBody Taches taches) {

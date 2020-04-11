@@ -82,8 +82,13 @@ public class ServiceSprintImpl implements IServiceSprint{
 	}
 	
 	@Override
-	public List<Sprint> getSprintsByProjetId(int projectId){
+	public List<Sprint> getSprintsByProjetId(Long projectId){
 		return sprintRepository.findByProjectId(projectId);
+	}
+
+	@Override
+	public Sprint getCurrentSprint(Long id){
+		return sprintRepository.findByProjectIdAndCurrent(id,true);
 	}
 
 }

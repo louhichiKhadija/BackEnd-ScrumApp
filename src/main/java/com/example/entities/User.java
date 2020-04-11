@@ -1,12 +1,16 @@
 package com.example.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -41,6 +45,8 @@ public class User {
 	   @ManyToMany(fetch = FetchType.EAGER, mappedBy = "user")
 	    private Set<Project> project = new HashSet<>();
 	
+	@OneToMany(fetch = FetchType.EAGER, mappedBy = "owner")
+	private List<Taches> tasks=new ArrayList<Taches>();
 	
 	
 	public User() {
@@ -161,6 +167,15 @@ public class User {
 	public void setUser(User user) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	@JsonIgnore
+	public List<Taches> getTasks() {
+		return tasks;
+	}
+
+	public void setTasks(List<Taches> tasks) {
+		this.tasks = tasks;
 	}
 	
 	
