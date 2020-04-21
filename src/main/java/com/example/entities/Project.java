@@ -35,9 +35,11 @@ public class Project {
 					@JoinColumn(name = "user_id", referencedColumnName = "id") })
 	private Set<User> user = new HashSet<>();
 
-	
+
 	@OneToMany(fetch = FetchType.EAGER, mappedBy ="project")
-	private List<Sprint> sprints=new ArrayList<Sprint>();
+	private List<UserStory> userStories=new ArrayList<UserStory>();
+
+
 
 	public long getId() {
 		return id;
@@ -63,13 +65,14 @@ public class Project {
 		this.user = user;
 	}
 
+
 	@JsonIgnore
-	public List<Sprint> getSprints() {
-		return sprints;
+	public List<UserStory> getUserStories() {
+		return userStories;
 	}
 
-	public void setSprints(List<Sprint> sprints) {
-		this.sprints = sprints;
+	public void setUserStories(List<UserStory> userStories) {
+		this.userStories = userStories;
 	}
 
 }

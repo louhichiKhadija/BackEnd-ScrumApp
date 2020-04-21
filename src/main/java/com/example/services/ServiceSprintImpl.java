@@ -1,5 +1,6 @@
 package com.example.services;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -8,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.example.entities.Sprint;
 import com.example.entities.Taches;
+import com.example.entities.UserStory;
 import com.example.repositories.SprintRepository;
 import com.example.repositories.TacheReprository;
+import com.example.repositories.UserStoryRepository;
 
 
 @Service
@@ -20,6 +23,9 @@ public class ServiceSprintImpl implements IServiceSprint{
 	
 	@Autowired
 	private TacheReprository tacheRepository;
+
+	@Autowired
+	private UserStoryRepository UserStoryRepository;
 	
 	
 	@Override
@@ -61,6 +67,8 @@ public class ServiceSprintImpl implements IServiceSprint{
 	public void addTaskToSprint(int id, int idTask){
 		Sprint sprint=sprintRepository.findById(id).get();
 		Taches task= tacheRepository.findById(idTask).get();
+
+		
 		List<Taches> tasks= sprint.getTasks();
 		if(!(tasks.contains(task))) {
 			tasks.add(task);
@@ -83,12 +91,22 @@ public class ServiceSprintImpl implements IServiceSprint{
 	
 	@Override
 	public List<Sprint> getSprintsByProjetId(Long projectId){
-		return sprintRepository.findByProjectId(projectId);
+		List<UserStory> userStories=UserStoryRepository.findByProjectId(projectId);
+		List<Sprint> sprints= new ArrayList<Sprint>();
+		userStories.forEach(ur->{
+			List<Taches> tasks=ur.getTaches();
+			tasks.forEach(task->{
+				if(task.getSprint()!=null && !sprints.contains(task.getSprint()))
+				sprints.add(task.getSprint());
+			});
+
+		});
+		return sprints;
 	}
 
-	@Override
+	/*@Override
 	public Sprint getCurrentSprint(Long id){
 		return sprintRepository.findByProjectIdAndCurrent(id,true);
-	}
+	}*/
 
 }

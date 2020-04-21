@@ -14,10 +14,11 @@ public interface IServiceUser {
 	public void delete(int id);
     public User findById(int id);
     public User findByEmail(String email);
+    public void updateImage(int id, String image);
+    public void updateUser(int id,User user);
+    public void updatePassword(int id, String password);
 
-    void updateUser(User user,Optional<User> users);
-
-    void updateUser(Optional<User> users,User user);
+    //void updateUser(Optional<User> users,User user);
 
     public Optional<User> findUser(int id);
 

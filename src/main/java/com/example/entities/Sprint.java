@@ -26,8 +26,8 @@ public class Sprint {
 	@OneToMany(fetch = FetchType.EAGER, mappedBy ="sprint")
 	private List<Taches> tasks=new ArrayList<Taches>();
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	private Project project;
+	/*@ManyToOne(fetch = FetchType.EAGER)
+	private Project project;*/
 
 	public int getId() {
 		return id;
@@ -70,14 +70,14 @@ public class Sprint {
 		this.current = current;
 	}
 
-	public Project getProject() {
+	/*public Project getProject() {
 		return project;
 	}
 
 	public void setProject(Project project) {
 		this.project = project;
 	}
-	
+	*/
 	
 	
 	

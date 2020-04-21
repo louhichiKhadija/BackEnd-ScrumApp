@@ -46,17 +46,28 @@ public class UserController {
     }
 
 
-    @GetMapping(value = "/getone/{id}")
-    public User getOne(@PathVariable(value = "id") int id){
-        return userService.findById(id);
+    @PostMapping(value = "/getone")
+    public User getOne(@RequestBody String email ){
+        return userService.findByEmail(email);
     }
     
 
-    @PostMapping("/update/{user_id}")	
-    public @ResponseBody void update(@PathVariable int user_id,@RequestBody  User user) {
-    	Optional<User> result=(Optional<User>) userService.findUser(user_id);
-    userService.updateUser(user, result);
+    @PostMapping("/update/{id}")	
+    public @ResponseBody void update(@PathVariable int id,@RequestBody  User user) {
+        userService.updateUser(id, user);
     
+    }
+
+    @PostMapping("/update-password/{id}")	
+    public @ResponseBody void update(@PathVariable int id,@RequestBody String password) {
+        userService.updatePassword(id, password);
+    
+    }
+
+
+    @PostMapping("/update-photo/{id}")
+    public void updatePhoto(@PathVariable int id, @RequestBody String image){
+        userService.updateImage(id, image);
     }
 
     @GetMapping(value = "/photo/{id}")

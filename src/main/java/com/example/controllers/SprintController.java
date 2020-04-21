@@ -53,14 +53,11 @@ public class SprintController {
 
 
 	//add new sprint (to a project)
-	@PostMapping(value="/addSprint/{projectid}")
-	public ResponseEntity<?> setSprint(@RequestBody Sprint sprint,
-										@PathVariable(value = "projectid") long id){
-		Project project=projectService.findProject(id).get();
-		if(project!= null){
-			sprint.setProject(project);
-			return new ResponseEntity<>(sprintService.addSprint(sprint),HttpStatus.OK);
-		} else return new ResponseEntity<>("bad action .. sorry",HttpStatus.BAD_REQUEST);
+	@PostMapping(value="/addSprint")
+	public int setSprint(@RequestBody Sprint sprint){
+		
+			return sprintService.addSprint(sprint);
+		
 		
 	}
 	
@@ -78,13 +75,13 @@ public class SprintController {
 		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
 	
-	@PostMapping(value="/addTaskToSprint/{id}/{idTask}")
-	public ResponseEntity<?> addTaskToSprint(@PathVariable int id, @PathVariable int idTask){
+	@GetMapping(value="/addTaskToSprint/{id}/{idTask}")
+	public boolean addTaskToSprint(@PathVariable int id, @PathVariable int idTask){
 		sprintService.addTaskToSprint(id, idTask);
-		return new ResponseEntity<>(true, HttpStatus.OK);
+		return true;
 	}
 
-	@GetMapping(value="/getCurrentSprint/{id}")
+	/*@GetMapping(value="/getCurrentSprint/{id}")
 	public ResponseEntity<?> addTaskToSprint(@PathVariable Long id){
 		Sprint sprint=sprintService.getCurrentSprint(id);
 		if(sprint==null){
@@ -93,5 +90,5 @@ public class SprintController {
 			return new ResponseEntity<>(firstSprint.getTasks(),HttpStatus.OK);}
 		
 		return new ResponseEntity<>(sprintService.getCurrentSprint(id).getTasks(),HttpStatus.OK);	
-	}
+	}*/
 }

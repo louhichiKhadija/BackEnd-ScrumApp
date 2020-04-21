@@ -47,18 +47,17 @@ public class ServiceProjectImpl implements ServiceProject {
 	}
 	
 	@Override
-	public void addProject(Project project) {
-		String email= SecurityContextHolder.getContext().getAuthentication().getName();
+	public long addProject(Project project, String email) {
 		User user=userRepository.findByEmail(email);
 		Set<User> users=project.getUser();
 		users.add(user);
 		project.setUser(users);
 		projectReprository.save(project);
+		return project.getId();
 	}
 	
 	@Override
-	public List<Project> getProjectsByUser(){
-		String email= SecurityContextHolder.getContext().getAuthentication().getName();
+	public List<Project> getProjectsByUser(String email){
 		User user=userRepository.findByEmail(email);
 		if(user !=null)
 		return projectReprository.findByUserId(user.getId());
@@ -104,4 +103,11 @@ public class ServiceProjectImpl implements ServiceProject {
 		return listImages;
 	}
 
+	@Override
+	public void deleteProject(long id){
+		Project project=projectReprository.findById(id).get();
+		project.setUserStories(null);
+		projectReprository.save(project);
+		projectReprository.deleteById(id);
+	}
 }

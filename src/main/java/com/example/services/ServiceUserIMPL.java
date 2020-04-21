@@ -31,13 +31,7 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
 	
 
 	
-	@Override
-	public void updateUser(Optional<User> users,User user) {
-		user.setUser(users.get());
-		userRepository.saveAndFlush(user);
-		
-	}
-
+	
 
 	@Autowired
 	private FileStorageService fileStorageService;
@@ -109,9 +103,31 @@ public class ServiceUserIMPL implements UserDetailsService, IServiceUser{
            return user.getPhoto();
     }
 	@Override
-	public void updateUser(User user, Optional<User> users) {
-		// TODO Auto-generated method stub
+	public void updateUser(int id,User user) {
+		User u=userRepository.findById(id).get();
+		if(u != null){
+			u.setFirstName(user.getFirstName());
+			u.setLastName(user.getLastName());
+			u.setEmail(user.getEmail());
+
+			userRepository.save(u);
+		} 
 		
+	}
+	@Override
+	public void updatePassword(int id, String password){
+		User u=userRepository.findById(id).get();
+		if(u != null){
+			u.setPassword(bcryptEncoder.encode(password));
+			userRepository.save(u);
+		}
+	}
+
+	@Override
+	public void updateImage(int id, String image){
+		User user=findById(id);
+		user.setPhoto(image);
+		userRepository.save(user);
 	}
 
 }

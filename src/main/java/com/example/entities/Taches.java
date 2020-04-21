@@ -19,6 +19,9 @@ public class Taches {
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	private User owner;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	private UserStory userStory;
 	
 	public Taches(int id, String title, String content, String state) {	
 		this.id = id;
@@ -99,6 +102,14 @@ public class Taches {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	
+
+	@JsonIgnore
+	public UserStory getUserStory() {
+		return userStory;
+	}
+
+	public void setUserStory(UserStory userStory) {
+		this.userStory = userStory;
+	}
 	
 }

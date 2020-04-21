@@ -2,7 +2,6 @@ package com.example.controllers;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -37,15 +36,15 @@ public Optional<Project>  getProject(@PathVariable(value = "id") long id)
 	return projectService.findProject(id);
 	
 }
-@PostMapping(value="/add-project")
-public void addProject(@RequestBody Project project) {
-	projectService.addProject(project);
+@PostMapping(value="/add-project/{email}")
+public long addProject(@RequestBody Project project, @PathVariable String email) {
+	return projectService.addProject(project, email);
 }
 
-@GetMapping(value="/getAllProjects")
-public List<Project>  getProjects()
+@GetMapping(value="/getAllProjects/{email}")
+public List<Project>  getProjects(@PathVariable String email)
 {
-	return projectService.getProjectsByUser();
+	return projectService.getProjectsByUser(email);
 }
 
 @PostMapping(value="/invit-member/{id}")
@@ -68,9 +67,9 @@ public ResponseEntity<?> acceptInvitation(@PathVariable(value = "id") long id, @
 		User user=token.getUser();
 		projectService.addMemberToProject(project,user);
 		confirmationTokenRepository.delete(token);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
-	return new ResponseEntity<>("Please check the link !",HttpStatus.BAD_REQUEST);
+	return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 }
 
 @GetMapping(value="/declineInvitation")
@@ -79,9 +78,9 @@ public ResponseEntity<?> declineInvitation(@RequestParam("token")String confirma
 	if(token != null && token.getType().equals("invitation"))
 	{
 		confirmationTokenRepository.delete(token);
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(true,HttpStatus.OK);
 	}
-	return new ResponseEntity<>("Please check the link !",HttpStatus.BAD_REQUEST);
+	return new ResponseEntity<>(false,HttpStatus.BAD_REQUEST);
 }
 
 @GetMapping(value="/getUsersImagesByProject/{id}")
@@ -89,6 +88,13 @@ public List<Resource>  getUsersImagesByProject(@PathVariable(value = "id") long 
 {
 	return projectService.getUsersImagesByProject(id);
 }
+
+@GetMapping(value="/delete-project/{id}")
+public void deleteProject(@PathVariable(value = "id") long id)
+{  
+	projectService.deleteProject(id);
+}
+
 
 
 

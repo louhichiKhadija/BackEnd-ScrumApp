@@ -6,9 +6,11 @@ import com.example.entities.Taches;
 
 public interface ServiceTaches {
 public List<Taches> getAll();
-public void addTaches(Taches T, int idSprint);
+public Taches addTaches(Taches T, int idSprint);
 public void updateTaches( Taches taches);
-public List<Taches> getNonTakenTasks();
+public List<Taches> getNonTakenTasks(long id);
 public List<Taches> getTasksBySprint(int idSprint);
+public void add(Taches task, int idUserStory);
+public void addOwner(int id, String email);
 	
 }

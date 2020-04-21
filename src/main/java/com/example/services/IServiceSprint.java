@@ -14,6 +14,6 @@ public interface IServiceSprint {
 	public void addTaskToSprint(int id, int idTask);
 	public void startSprint(int id);
 	public List<Sprint> getSprintsByProjetId(Long projectId);
-	public Sprint getCurrentSprint(Long id);
+	//public Sprint getCurrentSprint(Long id);
 	
 }

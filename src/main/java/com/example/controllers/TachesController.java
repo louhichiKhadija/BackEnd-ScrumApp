@@ -26,23 +26,34 @@ public class TachesController {
 		return serviceTaches.getAll();
 	}
 	
-
-@PostMapping(value="/add-taches/{idSprint}")
-public void adTaches(@RequestBody  Taches taches,@PathVariable int idSprint) {
-	serviceTaches.addTaches(taches, idSprint);
-}
-@PostMapping(value="/update")
-public void update(@RequestBody Taches taches) {
+	@PostMapping(value="/add-taches/{idSprint}")
+	public Taches adTaches(@RequestBody  Taches taches,@PathVariable int idSprint) {
+		return serviceTaches.addTaches(taches, idSprint);
+	}
 	
-	serviceTaches.updateTaches(taches);
-}
-	@GetMapping(value="/nonTakenTasks")
-	public List<Taches> getNonTakenTasks(){
-		return serviceTaches.getNonTakenTasks();
+	@PostMapping(value="/update")
+	public void update(@RequestBody Taches taches) {
+		serviceTaches.updateTaches(taches);
+	}
+
+	
+	@GetMapping(value="/nonTakenTasks/{idProject}")
+	public List<Taches> getNonTakenTasks(@PathVariable long idProject){
+		return serviceTaches.getNonTakenTasks(idProject);
 	}
 
 	@GetMapping(value="/getTasksBySprint/{idSprint}")
 	public List<Taches> getTasksBySprint(@PathVariable int idSprint){
 		return serviceTaches.getTasksBySprint(idSprint);
+	}
+
+	@PostMapping("/add/{idUserStory}")
+	public void save(@RequestBody Taches task, @PathVariable int idUserStory){
+		serviceTaches.add(task, idUserStory);
+	}
+
+	@PostMapping("addOwner/{id}")
+	public void addOwner(@RequestBody String email, @PathVariable int id){
+		serviceTaches.addOwner(id, email);
 	}
 }
