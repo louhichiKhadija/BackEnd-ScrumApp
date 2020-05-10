@@ -58,6 +58,10 @@ public class AuthController {
 	    @PostMapping(value = "/login")
 	    public ResponseEntity<?> register(@RequestBody User loginUser) throws AuthenticationException {
 
+			User user=userService.findByEmail(loginUser.getEmail());
+			if(!user.isEnabled())
+			   return new ResponseEntity<>("Account not enabled", HttpStatus.EXPECTATION_FAILED);
+			else{
 	        final Authentication authentication = authenticationManager.authenticate(
 	                new UsernamePasswordAuthenticationToken(
 	                        loginUser.getEmail(),
@@ -66,7 +70,7 @@ public class AuthController {
 	        );
 	        SecurityContextHolder.getContext().setAuthentication(authentication);
 	        final String token = jwtTokenUtil.generateToken(authentication);
-	        return ResponseEntity.ok(new AuthToken(token));
+	        return ResponseEntity.ok(new AuthToken(token));}
 	    }
 	    
 	    @PostMapping(value="/register")
