@@ -8,5 +8,5 @@ public interface ServiceTaches {
 public List<Taches> getAll();
 public void addTaches(Taches T);
 public void updateTaches( Taches taches);	
-	
+public void deleteTache(long id);
 }
